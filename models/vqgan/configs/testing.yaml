@@ -1,0 +1,48 @@
+name: vqgan
+
+log_dir: logs/vqgan_testing
+
+model:
+  embed_dim: 128
+  n_embed: 4096
+  lr_decay: [3, 0.1]
+  ddconfig:
+    double_z: False
+    z_channels: 128
+    resolution: 256
+    in_channels: 3
+    out_ch: 3
+    ch: 128
+    ch_mult: [ 1,1,2,2,4]  # num_down = len(ch_mult)-1
+    num_res_blocks: 2
+    attn_resolutions: [16]
+    dropout: 0.0
+
+loss:
+  disc_conditional: False
+  disc_in_channels: 3
+  disc_start: 0
+  disc_weight: 0.8
+  codebook_weight: 1.0
+  perceptual_weight: 1.0
+  vgg16_path: Null
+
+dataset:
+  name: imagenet
+  batch_size: 1
+  color: 'rgb'
+  resolution: [256, 256]
+  datapath: 'C:/MyFiles/Dataset/imagenet/full'
+  num_workers: 0
+  threshold: 10.0
+  patch_size: [16, 16]
+
+train:
+  steps: 5000000
+  log_steps: 1
+  ckpt_steps: 10000
+  base_learning_rate: 3.2e-6
+  accumulate_grad_batches: 1
+  gpus: 1
+  precision: 16  # can be 16 or 32
+  from_checkpoint: Null

@@ -1,0 +1,43 @@
+name: vqgan
+
+model:
+  embed_dim: 512
+  n_embed: 4096
+  lr_decay: [50000, 0.5]
+  ddconfig:
+    double_z: False
+    z_channels: 512
+    resolution: 256
+    in_channels: 3
+    out_ch: 3
+    ch: 128
+    ch_mult: [ 1,1,2,2,4]  # num_down = len(ch_mult)-1
+    num_res_blocks: 2
+    attn_resolutions: [16]
+    dropout: 0.0
+
+loss:
+  disc_conditional: False
+  disc_in_channels: 3
+  disc_start: 5001
+  disc_weight: 0.8
+  codebook_weight: 1.0
+  perceptual_weight: 1.0
+
+dataset:
+  name: coco_image
+  batch_size: 8
+  color: 'rgb'
+  resolution: [256, 256]
+  datapath: 'coco'
+  num_workers: 32
+
+train:
+  steps: 5000000
+  log_steps: 1
+  ckpt_steps: 5000
+  base_learning_rate: 1.6e-6
+  accumulate_grad_batches: 1
+  gpus: 8
+  precision: 16  # can be 16 or 32
+  from_checkpoint: Null

@@ -1,0 +1,39 @@
+name: imagenet
+log_dir: /home/ma-user/work/wc_utils/logs/bert_coco
+
+model:
+  vqgan_path: '/home/ma-user/work/wc_utils/logs/vqgan_coco'
+  lr_decay: [100, 0.1]
+  cond_ratio: 0.7
+  coltran_config:
+    embed_dim: 512
+    num_heads: 16
+    num_layers: 24
+    input_shape: [16, 16]
+    dim_gray: 512
+    vocab_color: 4096
+
+dataset:
+  name: coco
+  batch_size: 16
+  resolution: [256, 256]
+  color: 'rgb'
+  datapath: '/home/ma-user/work/wc_utils/input/coco'
+  num_workers: 32
+  patch_size: [16, 16]
+  superpixel: slic
+  mode_prob:
+    random: 0.95
+    block: 0.0
+    full: 0.05
+  strokes: 16
+
+train:
+  base_learning_rate: 3.0e-6
+  steps: 10000000
+  log_steps: 1
+  ckpt_steps: 20000
+  accumulate_grad_batches: 1
+  gpus: 4
+  precision: 16  # can be 16 or 32
+  from_checkpoint: Null

@@ -1,0 +1,40 @@
+name: imagenet
+log_dir: logs/testing
+
+model:
+  vqgan_path: 'logs/vqgan_imagenet_full'
+  lr_decay: [3, 0.1]  # Epochs
+  cond_ratio: 0.5
+  coltran_config:
+    embed_dim: 512
+    num_heads: 16
+    num_layers: 10
+    input_shape: [16, 16]
+    dim_gray: 512
+    vocab_color: 4096
+
+dataset:
+  name: imagenet
+  batch_size: 2
+  resolution: [256, 256]
+  color: 'rgb'
+  datapath: 'C:/MyFiles/Dataset/imagenet/full'
+  num_workers: 0
+  patch_size: [16, 16]
+  superpixel: seeds
+  mode_prob:
+    random: 1.0
+    block: 0.0
+    full: 0.0
+  strokes: 12
+  threshold: 10.0
+
+train:
+  base_learning_rate: 1.0e-4
+  steps: 10000000
+  log_steps: 1
+  ckpt_steps: 10000
+  accumulate_grad_batches: 2
+  gpus: 1
+  precision: 16  # can be 16 or 32
+  from_checkpoint: Null
