@@ -129,7 +129,6 @@ dmypy.json
 .pyre/
 
 # Custom
-*.ipynb
 *.pth
 *.png
 *.jpg
