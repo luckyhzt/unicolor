@@ -21,7 +21,7 @@ import glob
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('path', type=str, help='The path of the dataset.')
+    parser.add_argument('data_path', type=str, help='The path of the dataset.')
     parser.add_argument('--save_path', default='')
     args = parser.parse_args()
     if args.save_path == '':
@@ -41,7 +41,6 @@ if __name__ == '__main__':
         path = image_paths[i]
         img = Image.open(path).resize(img_size).convert('RGB')
         img = np.array(img)
-        converted_img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
 
         slic = cv2.ximgproc.createSuperpixelSLIC(img)
         slic.iterate(5)
