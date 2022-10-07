@@ -4,34 +4,6 @@ import numpy as np
 import cv2
 import torch
 from PIL import Image, ImageDraw
-from torch.utils.data import DataLoader
-
-
-def get_dataloaders(name, batch_size, datapath, splits, num_workers=0, **args):
-
-    if name == 'imagenet':
-        dataloaders = []
-        for s in splits:
-            ds = Imagenet(datapath, s, **args)
-            if s == 'train':
-                dl = DataLoader(ds, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-            else:
-                dl = DataLoader(ds, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-            dataloaders.append(dl)
-            print(f'{s} dataset loaded')
-        return dataloaders
-
-    if name == 'coco':
-        dataloaders = []
-        for s in splits:
-            ds = Coco(datapath, s, **args)
-            if s == 'train':
-                dl = DataLoader(ds, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-            else:
-                dl = DataLoader(ds, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-            dataloaders.append(dl)
-            print(f'{s} dataset loaded')
-        return dataloaders
 
 
 

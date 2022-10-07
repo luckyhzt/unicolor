@@ -10,9 +10,22 @@ import random
 import torchvision.transforms as T
 import torchvision.transforms.functional as TF
 import torch
+from torch.utils.data import DataLoader
 
-from mask import Mask_Generator
+from framework.datasets.mask import Mask_Generator
 
+
+
+def get_dataloaders(batch_size, split, num_workers=0, **args):
+
+    ds = Image_Dataset(split=split, **args)
+    if split == 'train':
+        dl = DataLoader(ds, batch_size=batch_size, shuffle=True, num_workers=num_workers)
+    else:
+        dl = DataLoader(ds, batch_size=batch_size, shuffle=False, num_workers=num_workers)
+    print(f'{split} dataset loaded')
+    
+    return dl
 
 
 class Image_Dataset(Data.Dataset):
@@ -41,7 +54,6 @@ class Image_Dataset(Data.Dataset):
                 self.metas += json.load(f)
         
 
-
     def __getitem__(self, index):
         img_meta = self.metas[index]
         img_path = os.path.join(self.datapath, img_meta['image_path'])
@@ -66,7 +78,7 @@ class Image_Dataset(Data.Dataset):
                 patch = patch.reshape(patch.shape[0], -1).permute(1, 0)
                 unique, counts = torch.unique(patch, dim=0, return_counts=True)
                 cond[i, :] = unique[torch.argmax(counts)]
-            return x, mask, cond
+            return x, x_sp, mask, cond
         else:
             if self.split == 'train':
                 x = self.train_transform(image)
@@ -125,18 +137,3 @@ class Image_Dataset(Data.Dataset):
 
     def __len__(self):
         return len(self.metas)
-
-
-
-# Test the dataset class
-if __name__ == '__main__':
-    ds = Image_Dataset(
-        datapath='/home/huangzhitong/dataset/coco',
-        meta_file=['train2017_meta.json', 'unlabeled2017_meta.json'],
-        split='train'
-        resolution=[256, 256],
-    )
-
-    
-
-    print(len(ds))
