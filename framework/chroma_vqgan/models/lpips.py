@@ -5,7 +5,7 @@ import torch.nn as nn
 from torchvision import models
 from collections import namedtuple
 
-from vqgan.utils.util import get_ckpt_path
+from chroma_vqgan.models.util import get_ckpt_path
 
 
 class LPIPS(nn.Module):

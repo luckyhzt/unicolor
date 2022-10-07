@@ -2,7 +2,7 @@ import functools
 import torch.nn as nn
 
 
-from vqgan.utils.ops import ActNorm
+from chroma_vqgan.models.ops import ActNorm
 
 
 def weights_init(m):

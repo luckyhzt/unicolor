@@ -12,8 +12,7 @@ import yaml
 from datetime import timedelta
 import torch
 
-#from chroma_vqgan.models.vqgan import VQModel
-#from chroma_vqgan.models.vqperceptual import VQLPIPSWithDiscriminator
+from chroma_vqgan.models.vqgan import VQModel
 from datasets.image_dataset import get_dataloaders
 
 import pytorch_lightning as pl
@@ -37,11 +36,21 @@ def train(args):
     train_dl = get_dataloaders(**dataset_config['train'])
     valid_dl = get_dataloaders(**dataset_config['val'])
 
+    # Build model
+    train_config['learning_rate'] = train_config['base_learning_rate'] * dataset_config['train']['batch_size'] \
+                                    * train_config['gpus'] * train_config['accumulate_grad_batches']
+    model = VQModel(
+        ddconfig=model_config['ddconfig'],
+        loss_config=loss_config,
+        n_embed=model_config['n_embed'],
+        embed_dim=model_config['embed_dim'],
+        learning_rate=train_config['learning_rate'],
+        lr_decay=model_config['lr_decay'],
+        )
+    print(f"Setting learning rate to {train_config['learning_rate']}" )
+
 
     '''# Load config
-
-    # Load dataset
-    [train_dl, valid_dl] = get_dataloaders(**dataset_config, splits=['train', 'val'])
 
     # Build model
     loss_criterion = VQLPIPSWithDiscriminator(**loss_config)

@@ -3,15 +3,16 @@ import torch.nn.functional as F
 import pytorch_lightning as pl
 import kornia
 
-from vqgan.models.module import Encoder, Decoder
-from vqgan.models.quantize import VectorQuantizer
+from chroma_vqgan.models.module import Encoder, Decoder
+from chroma_vqgan.models.quantize import VectorQuantizer
+from chroma_vqgan.models.vqperceptual import VQLPIPSWithDiscriminator
 from datasets.utils import *
 
 
 class VQModel(pl.LightningModule):
     def __init__(self,
                  ddconfig,
-                 loss,
+                 loss_config,
                  n_embed,
                  embed_dim,
                  learning_rate,
@@ -19,7 +20,7 @@ class VQModel(pl.LightningModule):
                  ):
         super().__init__()
         self.automatic_optimization=False
-        self.loss = loss
+        self.loss = VQLPIPSWithDiscriminator(**loss_config)
         self.learning_rate = learning_rate
         self.lr_decay_step, self.lr_decay = lr_decay
 

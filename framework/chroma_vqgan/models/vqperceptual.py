@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from vqgan.models.lpips import LPIPS
-from vqgan.models.discriminator import NLayerDiscriminator, weights_init
+from chroma_vqgan.models.lpips import LPIPS
+from chroma_vqgan.models.discriminator import NLayerDiscriminator, weights_init
 
 
 class DummyLoss(nn.Module):
