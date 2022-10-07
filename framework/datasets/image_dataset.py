@@ -29,7 +29,7 @@ def get_dataloaders(batch_size, split, num_workers=0, **args):
 
 
 class Image_Dataset(Data.Dataset):
-    def __init__(self, datapath, meta_file, resolution, split, patch_size=None, mode_prob=None, strokes=None):
+    def __init__(self, datapath, meta_file, resolution, split, patch_size=None, mode_prob=None, strokes=None, threshold=None):
         assert split in ('train', 'val')
         super().__init__()
         self.split = split
@@ -38,6 +38,7 @@ class Image_Dataset(Data.Dataset):
         self.patch_size = patch_size
         self.strokes = strokes
         self.datapath = datapath
+        self.threshold = threshold
         self.loadInfo()
         if mode_prob is not None:
             assert self.patch_size is not None and self.strokes is not None
@@ -48,10 +49,18 @@ class Image_Dataset(Data.Dataset):
 
     def loadInfo(self):
         assert isinstance(self.meta_file, list) or isinstance(self.meta_file, tuple)
-        self.metas = []
+        metas = []
         for mfile in self.meta_file:
             with open(os.path.join(self.datapath, mfile), 'r') as f:
-                self.metas += json.load(f)
+                metas += json.load(f)
+
+        if self.threshold is None:
+            self.metas = metas
+        else:
+            self.metas = []
+            for m in metas:
+                if m['colorfulness'] >= self.threshold:
+                    self.metas.append(m)
         
 
     def __getitem__(self, index):
