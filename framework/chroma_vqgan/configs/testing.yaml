@@ -27,15 +27,21 @@ loss:
   perceptual_weight: 1.0
   vgg16_path: Null
 
-dataset:
-  name: imagenet
-  batch_size: 1
-  color: 'rgb'
-  resolution: [256, 256]
-  datapath: 'C:/MyFiles/Dataset/imagenet/full'
-  num_workers: 0
-  threshold: 10.0
-  patch_size: [16, 16]
+data:
+  train:
+    split: 'train'
+    batch_size: 1
+    resolution: [256, 256]
+    datapath: '/home/huangzhitong/dataset/coco'
+    num_workers: 0
+    meta_files: ['train2017_meta.json', 'unlabeled2017_meta.json']
+  val:
+    split: 'val'
+    batch_size: 1
+    resolution: [256, 256]
+    datapath: '/home/huangzhitong/dataset/coco'
+    num_workers: 0
+    meta_files: ['val2017_meta.json']
 
 train:
   steps: 5000000

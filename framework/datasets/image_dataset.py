@@ -12,7 +12,7 @@ import torchvision.transforms.functional as TF
 import torch
 from torch.utils.data import DataLoader
 
-from framework.datasets.mask import Mask_Generator
+from datasets.mask import Mask_Generator
 
 
 
@@ -29,11 +29,11 @@ def get_dataloaders(batch_size, split, num_workers=0, **args):
 
 
 class Image_Dataset(Data.Dataset):
-    def __init__(self, datapath, meta_file, resolution, split, patch_size=None, mode_prob=None, strokes=None, threshold=None):
+    def __init__(self, datapath, meta_files, resolution, split, patch_size=None, mode_prob=None, strokes=None, threshold=None):
         assert split in ('train', 'val')
         super().__init__()
         self.split = split
-        self.meta_file = meta_file
+        self.meta_files = meta_files
         self.resolution = resolution
         self.patch_size = patch_size
         self.strokes = strokes
@@ -48,9 +48,9 @@ class Image_Dataset(Data.Dataset):
     
 
     def loadInfo(self):
-        assert isinstance(self.meta_file, list) or isinstance(self.meta_file, tuple)
+        assert isinstance(self.meta_files, list) or isinstance(self.meta_files, tuple)
         metas = []
-        for mfile in self.meta_file:
+        for mfile in self.meta_files:
             with open(os.path.join(self.datapath, mfile), 'r') as f:
                 metas += json.load(f)
 
@@ -87,7 +87,7 @@ class Image_Dataset(Data.Dataset):
                 patch = patch.reshape(patch.shape[0], -1).permute(1, 0)
                 unique, counts = torch.unique(patch, dim=0, return_counts=True)
                 cond[i, :] = unique[torch.argmax(counts)]
-            return x, x_sp, mask, cond
+            return x, mask, cond
         else:
             if self.split == 'train':
                 x = self.train_transform(image)

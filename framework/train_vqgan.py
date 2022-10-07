@@ -12,27 +12,33 @@ import yaml
 from datetime import timedelta
 import torch
 
-from vqgan.models.hybrid_vqgan import VQModel
-from vqgan.models.vqperceptual import VQLPIPSWithDiscriminator
-from datasets.utils import get_dataloaders
+#from chroma_vqgan.models.vqgan import VQModel
+#from chroma_vqgan.models.vqperceptual import VQLPIPSWithDiscriminator
+from datasets.image_dataset import get_dataloaders
 
 import pytorch_lightning as pl
 from pytorch_lightning import loggers as pl_loggers
 
 
 def train(args):
-    # Load config
     with open(args.config, 'rb') as fin:
         config = yaml.safe_load(fin)
     loss_config = config['loss']
     model_config = config['model']
     train_config = config['train']
-    dataset_config = config['dataset']
+    dataset_config = config['data']
 
     # Save configs
     os.makedirs(config['log_dir'], exist_ok=True)
     with open(os.path.join(config['log_dir'], 'config.yaml'), 'w') as fout:
         yaml.dump(config, fout)
+
+    # Load dataset
+    train_dl = get_dataloaders(**dataset_config['train'])
+    valid_dl = get_dataloaders(**dataset_config['val'])
+
+
+    '''# Load config
 
     # Load dataset
     [train_dl, valid_dl] = get_dataloaders(**dataset_config, splits=['train', 'val'])
@@ -78,7 +84,7 @@ def train(args):
     )
 
     # Start training
-    trainer.fit(model=model, train_dataloader=train_dl, val_dataloaders=valid_dl)
+    trainer.fit(model=model, train_dataloader=train_dl, val_dataloaders=valid_dl)'''
 
 
 
@@ -92,6 +98,6 @@ if __name__ == '__main__':
     args, unknown = parser.parse_known_args()
 
     current_path = os.path.dirname(os.path.realpath(__file__))
-    args.config = os.path.join(current_path, 'vqgan', 'configs', args.config + '.yaml')
+    args.config = os.path.join(current_path, 'chroma_vqgan', 'configs', args.config + '.yaml')
 
     args.run(args)
