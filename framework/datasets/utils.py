@@ -5,8 +5,6 @@ import cv2
 import torch
 from PIL import Image, ImageDraw
 from torch.utils.data import DataLoader
-from datasets.imagenet import Imagenet
-from datasets.coco import Coco
 
 
 def get_dataloaders(name, batch_size, datapath, splits, num_workers=0, **args):
