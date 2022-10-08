@@ -1,6 +1,6 @@
 data:
   train:
-    batch_size: 1
+    batch_size: 6
     datapath: /home/huangzhitong/dataset/coco
     meta_files:
     - train2017_meta.json
@@ -11,7 +11,7 @@ data:
     - 256
     split: train
   val:
-    batch_size: 1
+    batch_size: 6
     datapath: /home/huangzhitong/dataset/coco
     meta_files:
     - val2017_meta.json
@@ -58,7 +58,8 @@ train:
   base_learning_rate: 3.2e-06
   ckpt_steps: 10000
   from_checkpoint: null
-  gpus: 1
+  gpus:
+  - 2
   log_steps: 1
   precision: 16
   steps: 5000000

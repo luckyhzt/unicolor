@@ -30,14 +30,14 @@ loss:
 data:
   train:
     split: 'train'
-    batch_size: 1
+    batch_size: 6
     resolution: [256, 256]
     datapath: '/home/huangzhitong/dataset/coco'
     num_workers: 0
     meta_files: ['train2017_meta.json', 'unlabeled2017_meta.json']
   val:
     split: 'val'
-    batch_size: 1
+    batch_size: 6
     resolution: [256, 256]
     datapath: '/home/huangzhitong/dataset/coco'
     num_workers: 0
@@ -49,6 +49,6 @@ train:
   ckpt_steps: 10000
   base_learning_rate: 3.2e-6
   accumulate_grad_batches: 1
-  gpus: 1
+  gpus: [2]
   precision: 16  # can be 16 or 32
   from_checkpoint: Null

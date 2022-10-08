@@ -63,7 +63,7 @@ class VQModel(pl.LightningModule):
         return dec, diff
 
     def training_step(self, batch, batch_idx, optimizer_idx):
-        x, _, _ = batch
+        x = batch
 
         xrec, qloss = self(x)
 
@@ -99,7 +99,7 @@ class VQModel(pl.LightningModule):
         
 
     def validation_step(self, batch, batch_idx):
-        x, _, _ = batch
+        x = batch
 
         xrec, qloss = self(x)
 

@@ -1,9 +1,11 @@
-name: vqgan
+name: hybrid_vqgan_coco
+
+log_dir: logs/hybrid_vqgan_coco
 
 model:
   embed_dim: 512
   n_embed: 4096
-  lr_decay: [50000, 0.5]
+  lr_decay: [100, 1.0]
   ddconfig:
     double_z: False
     z_channels: 512
@@ -19,25 +21,33 @@ model:
 loss:
   disc_conditional: False
   disc_in_channels: 3
-  disc_start: 5001
+  disc_start: 4501
   disc_weight: 0.8
   codebook_weight: 1.0
   perceptual_weight: 1.0
 
-dataset:
-  name: coco_image
-  batch_size: 8
-  color: 'rgb'
-  resolution: [256, 256]
-  datapath: 'coco'
-  num_workers: 32
+data:
+  train:
+    split: 'train'
+    batch_size: 6
+    resolution: [256, 256]
+    datapath: '/home/huangzhitong/dataset/coco'
+    num_workers: 12
+    meta_files: ['train2017_meta.json', 'unlabeled2017_meta.json']
+  val:
+    split: 'val'
+    batch_size: 6
+    resolution: [256, 256]
+    datapath: '/home/huangzhitong/dataset/coco'
+    num_workers: 12
+    meta_files: ['val2017_meta.json']
 
 train:
   steps: 5000000
   log_steps: 1
-  ckpt_steps: 5000
-  base_learning_rate: 1.6e-6
-  accumulate_grad_batches: 1
-  gpus: 8
+  ckpt_steps: 10000
+  base_learning_rate: 3.2e-6
+  accumulate_grad_batches: 3
+  gpus: [6, 7]
   precision: 16  # can be 16 or 32
   from_checkpoint: Null

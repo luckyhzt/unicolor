@@ -38,7 +38,7 @@ def train(args):
 
     # Build model
     train_config['learning_rate'] = train_config['base_learning_rate'] * dataset_config['train']['batch_size'] \
-                                    * train_config['gpus'] * train_config['accumulate_grad_batches']
+                                    * len(train_config['gpus']) * train_config['accumulate_grad_batches']
     model = VQModel(
         ddconfig=model_config['ddconfig'],
         loss_config=loss_config,
@@ -49,36 +49,13 @@ def train(args):
         )
     print(f"Setting learning rate to {train_config['learning_rate']}" )
 
-
-    '''# Load config
-
-    # Build model
-    loss_criterion = VQLPIPSWithDiscriminator(**loss_config)
-    train_config['learning_rate'] = train_config['base_learning_rate'] * dataset_config['batch_size'] \
-                                    * train_config['gpus'] * train_config['accumulate_grad_batches']
-    model = VQModel(
-        ddconfig=model_config['ddconfig'],
-        loss=loss_criterion,
-        n_embed=model_config['n_embed'],
-        embed_dim=model_config['embed_dim'],
-        learning_rate=train_config['learning_rate'],
-        lr_decay=model_config['lr_decay'],
-        )
-    print(f"Setting learning rate to {train_config['learning_rate']}" )
-    
-    # Trainer
     logger = pl_loggers.TensorBoardLogger(save_dir=config['log_dir'])
-    if 'ckpt_steps' in train_config and train_config['ckpt_steps'] > 0:
-        checkpoint = pl.callbacks.ModelCheckpoint(
-            dirpath=config['log_dir'],
-            save_top_k=-1,
-            every_n_train_steps=train_config['ckpt_steps'],
-        )
-    else:
-        checkpoint = pl.callbacks.ModelCheckpoint(
-            dirpath=config['log_dir'],
-            save_top_k=-1,
-        )
+    checkpoint = pl.callbacks.ModelCheckpoint(
+        dirpath=config['log_dir'],
+        save_top_k=-1,
+        every_n_train_steps=train_config['ckpt_steps'],
+    )
+
     trainer = pl.Trainer(
         max_steps=train_config['steps'],
         gpus=train_config['gpus'],
@@ -87,13 +64,13 @@ def train(args):
         callbacks=[checkpoint],
         logger=logger,
         progress_bar_refresh_rate=train_config['log_steps'],
-        accelerator='ddp' if train_config['gpus'] > 1 else None,
-        plugins=pl.plugins.DDPPlugin(find_unused_parameters=True) if train_config['gpus'] > 1 else None,
+        accelerator='ddp' if len(train_config['gpus']) > 1 else None,
+        plugins=pl.plugins.DDPPlugin(find_unused_parameters=True) if len(train_config['gpus']) > 1 else None,
         resume_from_checkpoint=train_config['from_checkpoint'],
     )
 
     # Start training
-    trainer.fit(model=model, train_dataloader=train_dl, val_dataloaders=valid_dl)'''
+    trainer.fit(model=model, train_dataloader=train_dl, val_dataloaders=valid_dl)
 
 
 
