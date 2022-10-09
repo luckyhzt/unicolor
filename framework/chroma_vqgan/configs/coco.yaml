@@ -48,6 +48,6 @@ train:
   ckpt_steps: 10000
   base_learning_rate: 3.2e-6
   accumulate_grad_batches: 2
-  gpus: [2, 6, 7]
+  gpus: [0, 1, 2]
   precision: 16  # can be 16 or 32
   from_checkpoint: Null
