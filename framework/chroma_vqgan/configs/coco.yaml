@@ -21,7 +21,7 @@ model:
 loss:
   disc_conditional: False
   disc_in_channels: 3
-  disc_start: 4501
+  disc_start: 8001
   disc_weight: 0.8
   codebook_weight: 1.0
   perceptual_weight: 1.0
@@ -32,14 +32,14 @@ data:
     batch_size: 6
     resolution: [256, 256]
     datapath: '/home/huangzhitong/dataset/coco'
-    num_workers: 12
+    num_workers: 18
     meta_files: ['train2017_meta.json', 'unlabeled2017_meta.json']
   val:
     split: 'val'
     batch_size: 6
     resolution: [256, 256]
     datapath: '/home/huangzhitong/dataset/coco'
-    num_workers: 12
+    num_workers: 18
     meta_files: ['val2017_meta.json']
 
 train:
@@ -47,7 +47,7 @@ train:
   log_steps: 1
   ckpt_steps: 10000
   base_learning_rate: 3.2e-6
-  accumulate_grad_batches: 3
-  gpus: [6, 7]
+  accumulate_grad_batches: 2
+  gpus: [2, 6, 7]
   precision: 16  # can be 16 or 32
   from_checkpoint: Null
