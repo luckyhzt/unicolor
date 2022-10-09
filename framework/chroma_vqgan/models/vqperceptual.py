@@ -18,8 +18,8 @@ def adopt_weight(weight, global_step, threshold=0, value=0.):
 
 
 def hinge_d_loss(logits_real, logits_fake):
-    loss_real = torch.mean(F.relu(1. - logits_real) + 1e-6)
-    loss_fake = torch.mean(F.relu(1. + logits_fake) + 1e-6)
+    loss_real = torch.mean(F.relu(1. - logits_real))
+    loss_fake = torch.mean(F.relu(1. + logits_fake))
     d_loss = 0.5 * (loss_real + loss_fake)
     return d_loss
 
@@ -69,7 +69,7 @@ class VQLPIPSWithDiscriminator(nn.Module):
             g_grads = torch.autograd.grad(g_loss, self.last_layer[0], retain_graph=True)[0]
 
         d_weight = torch.norm(nll_grads) / (torch.norm(g_grads) + 1e-4)
-        d_weight = torch.clamp(d_weight, 1, 1+1e-6).detach()
+        d_weight = torch.clamp(d_weight, 0.0, 1e4).detach()
         d_weight = d_weight * self.discriminator_weight
         return d_weight
 
