@@ -1,6 +1,6 @@
 name: hybrid_vqgan_coco
 
-log_dir: logs/hybrid_vqgan_coco
+log_dir: logs/hybrid_vqgan_coco_2
 
 model:
   embed_dim: 512
