@@ -121,15 +121,23 @@ class VQModel(pl.LightningModule):
     def encode(self, x):
         x_gray = kornia.color.rgb_to_grayscale(x)
         f_gray = self.gray_encoder(x_gray)
+        assert check(f_gray)
         h = self.encoder(x)
+        assert check(h)
         h = self.quant_conv(h)
+        assert check(h)
         quant, emb_loss, info = self.quantize(h)
+        assert check(quant)
+        assert check(emb_loss)
         return (quant, emb_loss, info), f_gray
 
     def decode(self, quant, gray):
         feat = torch.cat([quant, gray], dim=1)
+        assert check(feat)
         feat = self.post_quant_conv(feat)
+        assert check(feat)
         dec = self.decoder(feat)
+        assert check(dec)
         return dec
 
     def decode_code(self, code_b):
@@ -141,3 +149,9 @@ class VQModel(pl.LightningModule):
         return self.decoder.conv_out.weight
 
 
+
+def check(tensor):
+    if torch.isnan(tensor).any() or torch.isinf(tensor).any():
+        return False
+    else:
+        return True

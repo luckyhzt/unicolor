@@ -1,6 +1,6 @@
-name: hybrid_vqgan_coco
+name: chroma_vqgan_coco
 
-log_dir: logs/hybrid_vqgan_coco_2
+log_dir: logs/chroma_vqgan_coco
 
 model:
   embed_dim: 512
@@ -46,7 +46,7 @@ train:
   steps: 5000000
   log_steps: 1
   ckpt_steps: 10000
-  base_learning_rate: 3.2e-6
+  learning_rate: 1.0e-4
   accumulate_grad_batches: 2
   gpus: [0, 1, 2]
   precision: 16  # can be 16 or 32

@@ -37,8 +37,9 @@ def train(args):
     valid_dl = get_dataloaders(**dataset_config['val'])
 
     # Build model
-    train_config['learning_rate'] = train_config['base_learning_rate'] * dataset_config['train']['batch_size'] \
-                                    * len(train_config['gpus']) * train_config['accumulate_grad_batches']
+    if 'learning_rate' not in train_config:
+        train_config['learning_rate'] = train_config['base_learning_rate'] * dataset_config['train']['batch_size'] \
+                                        * len(train_config['gpus']) * train_config['accumulate_grad_batches']
     model = VQModel(
         ddconfig=model_config['ddconfig'],
         loss_config=loss_config,

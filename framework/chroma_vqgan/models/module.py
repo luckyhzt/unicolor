@@ -32,7 +32,7 @@ def nonlinearity(x):
 
 
 def Normalize(in_channels):
-    return torch.nn.GroupNorm(num_groups=32, num_channels=in_channels, eps=1e-6, affine=True)
+    return torch.nn.GroupNorm(num_groups=32, num_channels=in_channels, eps=1e-4, affine=True)
 
 
 class Upsample(nn.Module):
@@ -117,6 +117,7 @@ class ResnetBlock(nn.Module):
     def forward(self, x, temb):
         h = x
         h = self.norm1(h)
+
         h = nonlinearity(h)
         h = self.conv1(h)
 
@@ -133,7 +134,6 @@ class ResnetBlock(nn.Module):
                 x = self.conv_shortcut(x)
             else:
                 x = self.nin_shortcut(x)
-
         return x+h
 
 
@@ -509,10 +509,8 @@ class Decoder(nn.Module):
 
         # timestep embedding
         temb = None
-
         # z to block_in
         h = self.conv_in(z)
-
         # middle
         h = self.mid.block_1(h, temb)
         h = self.mid.attn_1(h)
@@ -773,4 +771,3 @@ class UpsampleDecoder(nn.Module):
         h = nonlinearity(h)
         h = self.conv_out(h)
         return h
-

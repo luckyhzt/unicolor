@@ -5,7 +5,7 @@ data:
     meta_files:
     - train2017_meta.json
     - unlabeled2017_meta.json
-    num_workers: 0
+    num_workers: 18
     resolution:
     - 256
     - 256
@@ -15,7 +15,7 @@ data:
     datapath: /home/huangzhitong/dataset/coco
     meta_files:
     - val2017_meta.json
-    num_workers: 0
+    num_workers: 18
     resolution:
     - 256
     - 256
@@ -25,10 +25,9 @@ loss:
   codebook_weight: 1.0
   disc_conditional: false
   disc_in_channels: 3
-  disc_start: 0
+  disc_start: 501
   disc_weight: 0.8
   perceptual_weight: 1.0
-  vgg16_path: null
 model:
   ddconfig:
     attn_resolutions:
@@ -46,19 +45,21 @@ model:
     num_res_blocks: 2
     out_ch: 3
     resolution: 256
-    z_channels: 128
-  embed_dim: 128
+    z_channels: 512
+  embed_dim: 512
   lr_decay:
-  - 3
-  - 0.1
+  - 100
+  - 1.0
   n_embed: 4096
 name: vqgan
 train:
   accumulate_grad_batches: 1
-  base_learning_rate: 3.2e-06
+  base_learning_rate: 3.2e-05
   ckpt_steps: 10000
   from_checkpoint: null
   gpus:
+  - 0
+  - 1
   - 2
   log_steps: 1
   precision: 16
