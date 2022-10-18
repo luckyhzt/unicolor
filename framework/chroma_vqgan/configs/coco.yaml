@@ -48,7 +48,7 @@ train:
   steps: 5000000
   log_steps: 1
   ckpt_steps: 10000
-  learning_rate: 8.0e-5
+  learning_rate: 7.5e-5
   accumulate_grad_batches: 1
   gpus: [0, 1, 2, 3]
   precision: 16  # can be 16 or 32
