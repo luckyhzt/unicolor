@@ -59,6 +59,7 @@ class VQLPIPSWithDiscriminator(nn.Module):
         self.disc_factor = disc_factor
         self.discriminator_weight = disc_weight
         self.disc_conditional = disc_conditional
+        print('Discriminator weight:', self.discriminator_weight)
 
     def calculate_adaptive_weight(self, nll_loss, g_loss, last_layer=None):
         if last_layer is not None:
@@ -69,24 +70,23 @@ class VQLPIPSWithDiscriminator(nn.Module):
             g_grads = torch.autograd.grad(g_loss, self.last_layer[0], retain_graph=True)[0]
 
         d_weight = torch.norm(nll_grads) / (torch.norm(g_grads) + 1e-6)
-        d_weight = torch.clamp(d_weight, 0.0, 1e4).detach()
+        d_weight = torch.clamp(d_weight, 0.0, 1e3).detach()
         d_weight = d_weight * self.discriminator_weight
         return d_weight
 
     def forward(self, codebook_loss, inputs, reconstructions, optimizer_idx,
                 global_step, last_layer=None, cond=None, split="train"):
 
-        rec_loss = torch.abs(inputs.contiguous() - reconstructions.contiguous())
-
-        assert check(rec_loss)
+        '''rec_loss = (inputs.contiguous() - reconstructions.contiguous())**2 + 1e-6
+        rec_loss = torch.sqrt(rec_loss.mean())'''
+        rec_loss = torch.abs(inputs.contiguous() - reconstructions.contiguous()).mean()
 
         if self.perceptual_weight > 0:
             p_loss = self.perceptual_loss(inputs.contiguous(), reconstructions.contiguous()).mean()
-            assert not (p_loss!=p_loss).any()
-            nll_loss = torch.mean(rec_loss + self.perceptual_weight * p_loss)
+            nll_loss = rec_loss + self.perceptual_weight * p_loss
         else:
             p_loss = torch.tensor([0.0]).to(inputs.device)
-            nll_loss = torch.mean(rec_loss)
+            nll_loss = rec_loss
 
         # now the GAN part
         if optimizer_idx == 0:
@@ -98,24 +98,21 @@ class VQLPIPSWithDiscriminator(nn.Module):
                 assert self.disc_conditional
                 logits_fake = self.discriminator(torch.cat((reconstructions.contiguous(), cond), dim=1))
             g_loss = torch.mean(F.relu(1. - logits_fake))
-            assert check(g_loss)
 
             '''try:
                 d_weight = self.calculate_adaptive_weight(nll_loss, g_loss, last_layer=last_layer)
             except RuntimeError:
                 assert not self.training
                 d_weight = torch.tensor(0.0).to(inputs.device)'''
-            d_weight = torch.tensor(1.0).to(inputs.device)
 
             disc_factor = adopt_weight(self.disc_factor, global_step, threshold=self.discriminator_iter_start)
-            loss = nll_loss + d_weight * disc_factor * g_loss + self.codebook_weight * codebook_loss.mean()
+            loss = nll_loss + self.discriminator_weight * disc_factor * g_loss + self.codebook_weight * codebook_loss.mean()
 
             log = {"{}/total_loss".format(split): loss.clone().detach().mean(),
                 "{}/quant_loss".format(split): codebook_loss.detach().mean(),
                 "{}/nll_loss".format(split): nll_loss.detach().mean(),
                 "{}/rec_loss".format(split): rec_loss.detach().mean(),
                 "{}/p_loss".format(split): p_loss.detach().mean(),
-                "{}/d_weight".format(split): d_weight,
                 "{}/disc_factor".format(split): torch.tensor(disc_factor).to(inputs.device),
                 "{}/g_loss".format(split): g_loss.detach().mean(),
             }
@@ -131,13 +128,8 @@ class VQLPIPSWithDiscriminator(nn.Module):
                 logits_real = self.discriminator(torch.cat((inputs.contiguous().detach(), cond), dim=1))
                 logits_fake = self.discriminator(torch.cat((reconstructions.contiguous().detach(), cond), dim=1))
 
-            assert check(logits_fake)
-            assert check(logits_real)
-
             disc_factor = adopt_weight(self.disc_factor, global_step, threshold=self.discriminator_iter_start)
             d_loss = disc_factor * self.disc_loss(logits_real, logits_fake)
-
-            assert check(d_loss)
 
             log = {"{}/disc_loss".format(split): d_loss.clone().detach().mean(),
                 "{}/logits_real".format(split): logits_real.clone().detach().mean(),
@@ -145,11 +137,3 @@ class VQLPIPSWithDiscriminator(nn.Module):
                 }
                 
             return d_loss, log
-
-
-
-def check(tensor):
-    if torch.isnan(tensor).any() or torch.isinf(tensor).any():
-        return False
-    else:
-        return True
