@@ -5,7 +5,7 @@ import math
 
 
 
-class ColTran(nn.Module):
+class HybridTran(nn.Module):
     def __init__(self, embed_dim, num_heads, num_layers, input_shape, dim_gray, vocab_color):
         super().__init__()
         seq_length = input_shape[0] * input_shape[1]  # size of one image

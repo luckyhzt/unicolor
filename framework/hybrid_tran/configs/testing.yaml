@@ -1,0 +1,54 @@
+name: hybrid_tran_coco
+log_dir: logs/hybrid_tran_testing
+
+model:
+  vqgan_path: 'logs/vqgan_coco_nothresh/vqgan_179999.ckpt'
+  lr_decay: [50, 0.1]
+  cond_ratio: 0.7
+  hybridtran_config:
+    embed_dim: 512
+    num_heads: 16
+    num_layers: 24
+    input_shape: [16, 16]
+    dim_gray: 512
+    vocab_color: 4096
+
+data:
+  train:
+    split: 'train'
+    batch_size: 16
+    resolution: [256, 256]
+    datapath: '/home/huangzhitong/dataset/coco'
+    num_workers: 16
+    meta_files: ['train2017_meta.json', 'unlabeled2017_meta.json']
+    mode_prob:
+      block: 0.0
+      full: 0.05
+      random: 0.95
+    patch_size: [16, 16]
+    strokes: 16
+    threshold: 10.0
+  val:
+    split: 'val'
+    batch_size: 16
+    resolution: [256, 256]
+    datapath: '/home/huangzhitong/dataset/coco'
+    num_workers: 16
+    meta_files: ['val2017_meta.json']
+    mode_prob:
+      block: 0.0
+      full: 0.05
+      random: 0.95
+    patch_size: [16, 16]
+    strokes: 16
+    threshold: 10.0
+
+train:
+  base_learning_rate: 3.0e-6
+  steps: 10000000
+  log_steps: 1
+  ckpt_steps: 20000
+  accumulate_grad_batches: 1
+  gpus: [4]
+  precision: 16  # can be 16 or 32
+  from_checkpoint: Null

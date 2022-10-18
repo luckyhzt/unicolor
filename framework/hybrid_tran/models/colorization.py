@@ -15,9 +15,9 @@ import torch.nn.functional as F
 import itertools
 import kornia
 
-from filltran.models.transformer import ColTran
-from filltran.models.vqgan import HYBRID_VQGAN
-from filltran.utils.ops import *
+from hybrid_tran.models.transformer import HybridTran
+from hybrid_tran.models.vqgan import Chroma_VQGAN
+from hybrid_tran.utils.ops import *
 from datasets.utils import *
 
 
@@ -28,7 +28,7 @@ class Colorization(pl.LightningModule):
         vqgan_path,
         learning_rate,
         cond_ratio,
-        coltran_config,
+        hybridtran_config,
         lr_decay=[100, 1.0],
         load_vqgan_from_separate_file=True,
     ):
@@ -36,11 +36,11 @@ class Colorization(pl.LightningModule):
         self.lr = learning_rate
         self.lr_decay_step, self.lr_decay = lr_decay
         # Prepare pretrained vqgan
-        self.hybrid_vqgan = HYBRID_VQGAN(vqgan_path, load_vqgan_from_separate_file).eval().requires_grad_(False)
+        self.chroma_vqgan = Chroma_VQGAN(vqgan_path, load_vqgan_from_separate_file).eval().requires_grad_(False)
         # Build transformer model
-        self.coltran = ColTran(**coltran_config)
+        self.hybrid_tran = HybridTran(**hybridtran_config)
         # Mask token
-        self.mask_token = int(coltran_config['vocab_color'])
+        self.mask_token = int(hybridtran_config['vocab_color'])
         self.cond_ratio = cond_ratio
 
 
@@ -82,7 +82,7 @@ class Colorization(pl.LightningModule):
             cond_indices = None
 
         gray = rgb_to_gray(color)
-        idx_color, f_gray = self.hybrid_vqgan.encode(color, gray)
+        idx_color, f_gray = self.chroma_vqgan.encode(color, gray)
         f_gray = f_gray.view(f_gray.shape[0], f_gray.shape[1], -1)
         f_gray = f_gray.permute(0, 2, 1).contiguous()
         target = idx_color.clone()
@@ -90,7 +90,7 @@ class Colorization(pl.LightningModule):
         idx_color = idx_color.reshape(mask.shape)
         idx_color[mask == 0] = self.mask_token
 
-        logits = self.coltran(idx_color, f_gray, cond, cond_indices)
+        logits = self.hybrid_tran(idx_color, f_gray, cond, cond_indices)
 
         return logits, target
 
@@ -148,114 +148,6 @@ class Colorization(pl.LightningModule):
         loss = F.cross_entropy(logits, target)
         return loss
 
-    
-    def sample(self, x_gray, topk, strokes):
-        if len(strokes) > 0:
-            cond = []
-            cond_indices = []
-            for stk in strokes:
-                ind = stk['index']
-                ind = torch.Tensor([0, ind[0]//16, ind[1]//16]).long().to(self.device)
-                color = stk['color']
-                color = torch.Tensor(color).to(self.device)
-                color = color / 255.0 * 2.0 - 1.0
-                cond.append(color.unsqueeze(0))
-                cond_indices.append(ind.unsqueeze(0))
-            cond = torch.cat(cond, axis=0)
-            cond_indices = torch.cat(cond_indices, axis=0)
-        else:
-            cond = None
-            cond_indices = None
-
-        _, f_gray = self.hybrid_vqgan.encode(None, x_gray)
-        B = f_gray.shape[0]
-        sample_shape = [16, 16]
-        rows, cols = f_gray.shape[2:4]
-
-        color_idx = self.mask_token * torch.ones([1, rows, cols]).to(f_gray.device).long()
-
-        i = 0
-        for r in range(16):
-            for c in range(16):
-                # Input gray feature
-                cond_gray = f_gray.clone()
-                cond_gray = cond_gray.reshape(cond_gray.shape[0], cond_gray.shape[1], -1)
-                cond_gray = cond_gray.permute(0, 2, 1).contiguous()
-                # Input color indices
-                idx = color_idx.clone()
-
-                logits = self.coltran(idx, cond_gray, cond, cond_indices)
-                logits = logits[:, i, :]
-                logits = logits.reshape(-1, logits.shape[-1])
-                logits = self.top_k_logits(logits, topk)
-                probs = F.softmax(logits, dim=-1)
-                ix = torch.multinomial(probs, num_samples=1)
-                color_idx[:, r, c] = ix
-
-                i += 1
-
-        gen = self.hybrid_vqgan.decode(color_idx, f_gray)
-
-        return gen
-
-    
-    def sample_prior(self, x_gray, topk, strokes):
-        if len(strokes) > 0:
-            cond = []
-            cond_indices = []
-            for stk in strokes:
-                ind = stk['index']
-                ind = torch.Tensor([0, ind[0]//16, ind[1]//16]).long().to(self.device)
-                color = stk['color']
-                color = torch.Tensor(color).to(self.device)
-                color = color / 255.0 * 2.0 - 1.0
-                cond.append(color.unsqueeze(0))
-                cond_indices.append(ind.unsqueeze(0))
-            cond = torch.cat(cond, axis=0)
-            cond_indices = torch.cat(cond_indices, axis=0)
-        else:
-            cond = None
-            cond_indices = None
-
-        _, f_gray = self.hybrid_vqgan.encode(None, x_gray)
-        B = f_gray.shape[0]
-        sample_shape = [16, 16]
-        rows, cols = f_gray.shape[2:4]
-        # Input gray feature
-        cond_gray = f_gray.clone()
-        cond_gray = cond_gray.reshape(cond_gray.shape[0], cond_gray.shape[1], -1)
-        cond_gray = cond_gray.permute(0, 2, 1).contiguous()
-
-        color_idx = self.mask_token * torch.ones([1, rows, cols]).to(f_gray.device).long()
-        logits = self.coltran(color_idx, cond_gray, cond, cond_indices)
-        logits = logits.reshape(-1, logits.shape[-1])
-        logits = self.top_k_logits(logits, topk)
-        probs = F.softmax(logits, dim=-1)
-        prior = torch.multinomial(probs, num_samples=1)
-        prior = prior.reshape([1, rows, cols])
-        for _, r, c in cond_indices:
-            color_idx[:, r, c] = prior[:, r, c]
-
-        i = 0
-        for r in range(16):
-            for c in range(16):
-                # Input color indices
-                idx = color_idx.clone()
-
-                logits = self.coltran(idx, cond_gray, cond, cond_indices)
-                logits = logits[:, i, :]
-                logits = logits.reshape(-1, logits.shape[-1])
-                logits = self.top_k_logits(logits, topk)
-                probs = F.softmax(logits, dim=-1)
-                ix = torch.multinomial(probs, num_samples=1)
-                color_idx[:, r, c] = ix
-
-                i += 1
-
-        prior = self.hybrid_vqgan.decode(prior, f_gray)
-        gen = self.hybrid_vqgan.decode(color_idx, f_gray)
-
-        return prior, gen
 
 
     def configure_optimizers(self):
@@ -271,10 +163,10 @@ class Colorization(pl.LightningModule):
         no_decay = set()
         whitelist_weight_modules = (torch.nn.Linear, )
         blacklist_weight_modules = (torch.nn.LayerNorm, torch.nn.Embedding)
-        #all_modules = itertools.chain(self.coltran.named_modules(), self.discriminator.named_modules())
-        #all_parameters = itertools.chain(self.coltran.named_parameters(), self.discriminator.named_parameters())
+        #all_modules = itertools.chain(self.hybrid_tran.named_modules(), self.discriminator.named_modules())
+        #all_parameters = itertools.chain(self.hybrid_tran.named_parameters(), self.discriminator.named_parameters())
 
-        for mn, m in self.coltran.named_modules():
+        for mn, m in self.hybrid_tran.named_modules():
             for pn, p in m.named_parameters():
                 fpn = '%s.%s' % (mn, pn) if mn else pn # full param name
 
@@ -293,7 +185,7 @@ class Colorization(pl.LightningModule):
         no_decay.add('cond_emb')
 
         # validate that we considered every parameter
-        param_dict = {pn: p for pn, p in self.coltran.named_parameters()}
+        param_dict = {pn: p for pn, p in self.hybrid_tran.named_parameters()}
         inter_params = decay & no_decay
         union_params = decay | no_decay
         assert len(inter_params) == 0, "parameters %s made it into both decay/no_decay sets!" % (str(inter_params), )

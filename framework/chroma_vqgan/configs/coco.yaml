@@ -1,6 +1,6 @@
 name: chroma_vqgan_coco
 
-log_dir: logs/chroma_vqgan_coco
+log_dir: logs/vqgan_coco_t10
 
 model:
   embed_dim: 512
@@ -29,18 +29,20 @@ loss:
 data:
   train:
     split: 'train'
-    batch_size: 6
+    batch_size: 4
     resolution: [256, 256]
     datapath: '/home/huangzhitong/dataset/coco'
-    num_workers: 18
+    num_workers: 12
     meta_files: ['train2017_meta.json', 'unlabeled2017_meta.json']
+    threshold: 10.0
   val:
     split: 'val'
-    batch_size: 6
+    batch_size: 4
     resolution: [256, 256]
     datapath: '/home/huangzhitong/dataset/coco'
-    num_workers: 18
+    num_workers: 12
     meta_files: ['val2017_meta.json']
+    threshold: 10.0
 
 train:
   steps: 5000000
@@ -48,6 +50,6 @@ train:
   ckpt_steps: 10000
   learning_rate: 1.0e-4
   accumulate_grad_batches: 2
-  gpus: [0, 1, 2]
+  gpus: [0, 1, 2, 3]
   precision: 16  # can be 16 or 32
   from_checkpoint: Null

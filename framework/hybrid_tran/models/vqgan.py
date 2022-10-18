@@ -6,21 +6,22 @@ import numpy as np
 import pytorch_lightning as pl
 from PIL import Image
 from torch import nn
-from filltran.utils.ops import *
-from vqgan.models.hybrid_vqgan import VQModel
+from hybrid_tran.utils.ops import *
+from chroma_vqgan.models.vqgan import VQModel
 
 
-class HYBRID_VQGAN(nn.Module):
+class Chroma_VQGAN(nn.Module):
     def __init__(self, model_path, load_vqgan_from_separate_file):
         super().__init__()
-        with open(os.path.join(model_path, 'config.yaml'), 'rb') as fin:
+
+        with open(os.path.abspath( os.path.join(model_path, os.pardir, 'config.yaml') ), 'rb') as fin:
             config = yaml.safe_load(fin)
         
         model_config = config['model']
         if load_vqgan_from_separate_file:
-            self.model = VQModel.load_from_checkpoint(checkpoint_path=os.path.join(model_path, 'vqgan.ckpt'), strict=False,
+            self.model = VQModel.load_from_checkpoint(checkpoint_path=model_path, strict=False,
                 ddconfig=model_config['ddconfig'],
-                loss=None,
+                loss_config=None,
                 n_embed=model_config['n_embed'],
                 embed_dim=model_config['embed_dim'],
                 learning_rate=0.0,
@@ -29,7 +30,7 @@ class HYBRID_VQGAN(nn.Module):
             # The model should be loaded along with the checkpoint of transformer
             self.model = VQModel(
                 ddconfig=model_config['ddconfig'],
-                loss=None,
+                loss_config=None,
                 n_embed=model_config['n_embed'],
                 embed_dim=model_config['embed_dim'],
                 learning_rate=0.0,

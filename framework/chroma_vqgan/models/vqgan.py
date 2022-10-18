@@ -20,7 +20,8 @@ class VQModel(pl.LightningModule):
                  ):
         super().__init__()
         self.automatic_optimization=False
-        self.loss = VQLPIPSWithDiscriminator(**loss_config)
+        if loss_config:
+            self.loss = VQLPIPSWithDiscriminator(**loss_config)
         self.learning_rate = learning_rate
         self.lr_decay_step, self.lr_decay = lr_decay
 

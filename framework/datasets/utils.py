@@ -25,15 +25,3 @@ def output_to_pil(x):
     if not x.mode == "RGB":
         x = x.convert("RGB")
     return x
-
-
-if __name__ == '__main__':
-    [dl] = get_dataloaders('imagenet', 2, [256, 256], 'RGB', 'C:\MyFiles\Dataset\imagenet/full', ['val'])
-
-    diter = iter(dl)
-
-    x = diter.next()
-
-    print(x.shape)
-    x = output_to_pil(x[0])
-    x.show()
