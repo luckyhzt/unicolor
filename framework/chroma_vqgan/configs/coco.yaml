@@ -29,7 +29,7 @@ loss:
 data:
   train:
     split: 'train'
-    batch_size: 4
+    batch_size: 6
     resolution: [256, 256]
     datapath: '/home/huangzhitong/dataset/coco'
     num_workers: 12
@@ -37,7 +37,7 @@ data:
     threshold: 10.0
   val:
     split: 'val'
-    batch_size: 4
+    batch_size: 6
     resolution: [256, 256]
     datapath: '/home/huangzhitong/dataset/coco'
     num_workers: 12
@@ -48,8 +48,8 @@ train:
   steps: 5000000
   log_steps: 1
   ckpt_steps: 10000
-  learning_rate: 1.0e-4
-  accumulate_grad_batches: 2
+  learning_rate: 8.0e-5
+  accumulate_grad_batches: 1
   gpus: [0, 1, 2, 3]
   precision: 16  # can be 16 or 32
   from_checkpoint: Null
