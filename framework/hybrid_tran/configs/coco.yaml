@@ -1,8 +1,8 @@
 name: hybrid_tran_coco
-log_dir: logs/hybrid_tran_coco
+log_dir: logs/tran_coco_t10
 
 model:
-  vqgan_path: 'logs/chroma_vqgan_coco/vqgan_179999.ckpt'
+  vqgan_path: 'logs/vqgan_coco_t10/epoch=33-step=319999.ckpt'
   lr_decay: [50, 0.1]
   cond_ratio: 0.7
   hybridtran_config:
