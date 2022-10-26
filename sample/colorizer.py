@@ -24,15 +24,15 @@ import torchvision
 import skimage.color
 
 from utils_func import *
-from ImageMatch.warp import ImageWarper
+#from ImageMatch.warp import ImageWarper
 
 
 
 class Colorizer():
     def __init__(self, ckpt_file, device, img_size, load_clip=False, load_warper=False):
-        self.ckpt_path = os.path.join(ckpt_file, os.pardir)
+        self.ckpt_path = os.path.abspath( os.path.join(ckpt_file, os.pardir) )
         self.ckpt_file = (ckpt_file.split('/')[-1]).split('.')[0]
-        self.model_path = os.path.join(self.ckpt_path, os.pardir, os.pardir)
+        self.model_path = os.path.abspath( os.path.join(self.ckpt_path, os.pardir, os.pardir) )
         self.device = device
         self.img_size = img_size
         self.sample_size = [self.img_size[0] // 16, self.img_size[1] // 16]
@@ -54,7 +54,7 @@ class Colorizer():
         # Load colorizer
         os.chdir(self.model_path)
         sys.path.append(self.model_path)
-        module = importlib.import_module('filltran.models.colorization')
+        module = importlib.import_module('hybrid_tran.models.colorization')
         model = getattr(module, 'Colorization')
         self.transformer = load_model(model, self.ckpt_path, self.ckpt_file).to(self.device).eval().requires_grad_(False)
 
@@ -82,13 +82,13 @@ class Colorizer():
             cond_indices = None
 
         if prior_image == None:
-            _, f_gray = self.transformer.hybrid_vqgan.encode(None, x_gray)
+            _, f_gray = self.transformer.chroma_vqgan.encode(None, x_gray)
             rows, cols = f_gray.shape[2:4]
             color_idx = self.transformer.mask_token * torch.ones([1, rows, cols]).to(f_gray.device).long()
         else:
             prior_image = prior_image.convert('RGB')
             x_prior = preprocess(prior_image, self.img_size).to(self.device)
-            color_idx, f_gray = self.transformer.hybrid_vqgan.encode(x_prior, x_gray)
+            color_idx, f_gray = self.transformer.chroma_vqgan.encode(x_prior, x_gray)
             rows, cols = f_gray.shape[2:4]
             color_idx = color_idx.reshape(color_idx.shape[0], rows, cols)
         
@@ -112,7 +112,7 @@ class Colorizer():
             # Input color indices
             idx = color_idx.clone()
 
-            logits = self.transformer.coltran(idx, cond_gray, cond, cond_indices)
+            logits = self.transformer.hybrid_tran(idx, cond_gray, cond, cond_indices)
             logits = logits.view(logits.shape[0], rows, cols, -1)
             logits = logits[:, r, c, :]
             logits = logits.reshape(-1, logits.shape[-1])
@@ -124,7 +124,7 @@ class Colorizer():
             if progress is not None:
                 progress.emit(int(100 * (i+1) / len(sample_indices)))
 
-        gen = self.transformer.hybrid_vqgan.decode(color_idx, f_gray)
+        gen = self.transformer.chroma_vqgan.decode(color_idx, f_gray)
         gen = output_to_pil(gen[0])
         gen = color_resize(image, gen)
         return gen
@@ -138,7 +138,7 @@ class Colorizer():
 
         x_gray = preprocess(gray, None).to(self.device)
         x_color = preprocess(color, None).to(self.device)
-        color_idx, f_gray = self.transformer.hybrid_vqgan.encode(x_color, x_gray)
+        color_idx, f_gray = self.transformer.chroma_vqgan.encode(x_color, x_gray)
         color_idx = color_idx.reshape(1, f_gray.shape[2], f_gray.shape[3])
 
         # Sampling parameters
@@ -168,7 +168,7 @@ class Colorizer():
                 # Mask neighboring positions
                 idx[:, rm0:rm1, cm0:cm1] = self.transformer.mask_token
 
-                logits = self.transformer.coltran(idx, cond, None, None)
+                logits = self.transformer.hybrid_tran(idx, cond, None, None)
                 logits = logits[:, pos, :]
                 logits = logits.reshape(-1, logits.shape[-1])
                 logits = self.transformer.top_k_logits(logits, topk)
@@ -181,7 +181,7 @@ class Colorizer():
                 if progress is not None:
                     progress.emit(int(100 * (i+1) / total))
 
-        gen = self.transformer.hybrid_vqgan.decode(color_idx, f_gray)
+        gen = self.transformer.chroma_vqgan.decode(color_idx, f_gray)
         gen = output_to_pil(gen[0])
         gen = color_resize(gray, gen)
         return gen

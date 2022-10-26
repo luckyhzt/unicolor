@@ -11,30 +11,20 @@ from chroma_vqgan.models.vqgan import VQModel
 
 
 class Chroma_VQGAN(nn.Module):
-    def __init__(self, model_path, load_vqgan_from_separate_file):
+    def __init__(self, model_config, model_path=None):
         super().__init__()
 
-        with open(os.path.abspath( os.path.join(model_path, os.pardir, 'config.yaml') ), 'rb') as fin:
-            config = yaml.safe_load(fin)
+        self.model = VQModel(
+            ddconfig=model_config['ddconfig'],
+            loss_config=None,
+            n_embed=model_config['n_embed'],
+            embed_dim=model_config['embed_dim'],
+            learning_rate=0.0,
+        )
         
-        model_config = config['model']
-        if load_vqgan_from_separate_file:
-            self.model = VQModel.load_from_checkpoint(checkpoint_path=model_path, strict=False,
-                ddconfig=model_config['ddconfig'],
-                loss_config=None,
-                n_embed=model_config['n_embed'],
-                embed_dim=model_config['embed_dim'],
-                learning_rate=0.0,
-            )
-        else:
-            # The model should be loaded along with the checkpoint of transformer
-            self.model = VQModel(
-                ddconfig=model_config['ddconfig'],
-                loss_config=None,
-                n_embed=model_config['n_embed'],
-                embed_dim=model_config['embed_dim'],
-                learning_rate=0.0,
-            )
+        if model_path is not None:
+            self.model.load_from_checkpoint(checkpoint_path=model_path, strict=True)
+
         self.encoder = self.model.encoder
         self.gray_encoder = self.model.gray_encoder
         self.quant_conv = self.model.quant_conv

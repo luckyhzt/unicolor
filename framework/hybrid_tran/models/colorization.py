@@ -25,18 +25,18 @@ from datasets.utils import *
 class Colorization(pl.LightningModule):
     def __init__(
         self,
-        vqgan_path,
+        vqgan_config,
         learning_rate,
         cond_ratio,
         hybridtran_config,
         lr_decay=[100, 1.0],
-        load_vqgan_from_separate_file=True,
+        vqgan_path=None,
     ):
         super().__init__()
         self.lr = learning_rate
         self.lr_decay_step, self.lr_decay = lr_decay
         # Prepare pretrained vqgan
-        self.chroma_vqgan = Chroma_VQGAN(vqgan_path, load_vqgan_from_separate_file).eval().requires_grad_(False)
+        self.chroma_vqgan = Chroma_VQGAN(vqgan_config, vqgan_path).eval().requires_grad_(False)
         # Build transformer model
         self.hybrid_tran = HybridTran(**hybridtran_config)
         # Mask token

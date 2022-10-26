@@ -28,7 +28,7 @@ def load_model(model, dir, step):
         find(dir, step+'.ckpt'),
         **model_config,
         load_vqgan_from_separate_file=False,
-        strict=False
+        strict=True
     )
     return loaded
         
