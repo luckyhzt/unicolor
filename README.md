@@ -1,7 +1,6 @@
 ## Code release progress:
 
 <strong>Todo:</strong>
-- <strong>Environment</strong>
 - <strong>Instructions for training code</strong>
 - <strong>Pretrained model checkpoint</strong>
 - <strong>Sampling code</strong>
@@ -9,6 +8,7 @@
 
 Done:
 - Basic training code
+- Environment
 
 # *UniColor* : A Unified Framework for Multi-Modal Colorization with Transformer
 
