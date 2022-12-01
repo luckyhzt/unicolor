@@ -4,8 +4,11 @@ Todo:
 - Pretrained model checkpoint
 - Sampling code
 - Interactive interface
+
 Done:
+\textcolor{gray}
 - Basic training code
+{gray}
 
 # *UniColor* : A Unified Framework for Multi-Modal Colorization with Transformer
 
