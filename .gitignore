@@ -130,10 +130,5 @@ dmypy.json
 
 # Custom
 *.pth
-*.png
-*.jpg
-*.bmp
-*.JPEG
-*.jpeg
 logs
 results
