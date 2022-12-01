@@ -18,20 +18,11 @@ Our framework consists of two stages. In the first stage, all different conditio
 ![alt text](figures/unified.png)
 
 # BibTex
-@misc{https://doi.org/10.48550/arxiv.2209.11223,
-  doi = {10.48550/ARXIV.2209.11223},
-
-  url = {https://arxiv.org/abs/2209.11223},
-  
-  author = {Huang, Zhitong and Zhao, Nanxuan and Liao, Jing},
-  
-  keywords = {Computer Vision and Pattern Recognition (cs.CV), Graphics (cs.GR), FOS: Computer and information sciences, FOS: Computer and information sciences},
-  
-  title = {UniColor: A Unified Framework for Multi-Modal Colorization with Transformer},
-  
-  publisher = {arXiv},
-  
-  year = {2022},
-  
-  copyright = {arXiv.org perpetual, non-exclusive license}
+@misc{huang2022unicolor \
+    author = {Huang, Zhitong and Zhao, Nanxuan and Liao, Jing}, \
+    title = {UniColor: A Unified Framework for Multi-Modal Colorization with Transformer}, \
+    year = {2022}, \
+    eprint = {2209.11223}, \
+    archivePrefix = {arXiv}, \
+    primaryClass = {cs.CV} \
 }
