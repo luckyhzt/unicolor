@@ -33,8 +33,13 @@ Our framework consists of two stages. In the first stage, all different conditio
 ## Environments
 For basic colorization framework:
 ```
-conda env create -f env.yaml
-conda activate unicolor
+$ conda env create -f env.yaml
+$ conda activate unicolor
+```
+To use text-based colorization, install [CLIP](https://github.com/openai/CLIP) with:
+```
+$ pip install ftfy regex tqdm
+$ pip install git+https://github.com/openai/CLIP.git
 ```
 
 ## BibTex
