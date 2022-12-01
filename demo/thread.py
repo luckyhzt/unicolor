@@ -3,8 +3,6 @@ import os, sys
 sys.path.append('./sample')
 from PIL import Image
 import numpy as np
-import yaml
-import importlib
 
 from PyQt5 import QtWidgets,QtCore
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog

@@ -1,7 +1,6 @@
 from multiprocessing import Pool
 import glob
 import os
-import sys
 import cv2
 from functools import partial
 from tqdm import tqdm

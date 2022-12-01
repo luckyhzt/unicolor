@@ -1,11 +1,8 @@
-import os, sys
+import os
 import json
-import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 from torch.utils import data as Data
-from PIL import Image, ImageDraw
-from tqdm import tqdm
+from PIL import Image
 import random
 import torchvision.transforms as T
 import torchvision.transforms.functional as TF

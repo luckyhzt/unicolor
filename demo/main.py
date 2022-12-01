@@ -1,13 +1,8 @@
 import os, sys
-from attr import has
-
-from requests import delete
 
 sys.path.append('./sample')
 from PIL import Image
 import numpy as np
-import yaml
-import importlib
 from io import BytesIO
 import win32clipboard
 
@@ -21,7 +16,6 @@ from stroke import Stroke, RectRegion
 
 import cv2
 import qimage2ndarray
-import pyautogui
 
 from utils_func import *
 from sample_func import *
@@ -50,15 +44,6 @@ class MainWindow(QMainWindow, Ui_main.Ui_MainWindow):
         self.load_filltran('C:/MyFiles/CondTran/finals/bert_coco/logs/bert/epoch=144-step=259999.ckpt')
         # Imagenet model
         #self.load_filltran('C:/MyFiles/CondTran/finals/bert_final/logs/bert/epoch=14-step=142124.ckpt')
-
-
-    def keyPressEvent(self, e):
-        if e.key() == 68:
-            item = self.diverse_list.currentItem()
-            print(item)
-            if item != None:
-                self.delete_result(item)
-
 
     def mousePressEvent(self, e):
         self.origin = QPoint(e.pos())
@@ -109,8 +94,6 @@ class MainWindow(QMainWindow, Ui_main.Ui_MainWindow):
 
         self.update()
 
-
-
     def draw_sample_regions(self):
         pw, ph = self.output_canvas.pixmap().width(), self.output_canvas.pixmap().height()
         original = np.array(self.output_image.resize([pw, ph]))
@@ -122,7 +105,6 @@ class MainWindow(QMainWindow, Ui_main.Ui_MainWindow):
             c1 = int(c1 / 16 * pw)
             highlight[r0:r1, c0:c1, :] = cv2.cvtColor( cv2.cvtColor(original[r0:r1, c0:c1, :], cv2.COLOR_RGB2GRAY), cv2.COLOR_GRAY2RGB )
             self.display_output(highlight)
-
 
     def inwhich_canvas(self, x, y):
         for window in ['input', 'output']:
@@ -154,7 +136,6 @@ class MainWindow(QMainWindow, Ui_main.Ui_MainWindow):
             y /= ph
         return x, y
 
-
     def init_components(self):
         self.info.setWordWrap(True)
         self.sampling_bar.hide()
@@ -172,51 +153,7 @@ class MainWindow(QMainWindow, Ui_main.Ui_MainWindow):
         self.colorpicker.setGeometry(10, 542, 221, 209)
         self.diverse_list.itemDoubleClicked.connect(self.edit_result)
 
-        self.deleteSc = QShortcut(QKeySequence('q'), self)
-        self.deleteSc.activated.connect(self.delete_result)
-
-        self.recordSc = QShortcut(QKeySequence('Alt+w'), self)
-        self.recordSc.activated.connect(self.record)
-        self.backSc = QShortcut(QKeySequence('Alt+e'), self)
-        self.backSc.activated.connect(self.back)
-
-        self.recordSc2 = QShortcut(QKeySequence('Alt+s'), self)
-        self.recordSc2.activated.connect(self.record2)
-
-        self.backSc2 = QShortcut(QKeySequence('Alt+d'), self)
-        self.backSc2.activated.connect(self.back2)
-
-        self.recordSc3 = QShortcut(QKeySequence('Alt+x'), self)
-        self.recordSc3.activated.connect(self.record3)
-
-        self.backSc3 = QShortcut(QKeySequence('Alt+c'), self)
-        self.backSc3.activated.connect(self.back3)
-
         self.update()
-
-    def record(self):
-        self.mouse_pos = list(pyautogui.position())
-    
-    def back(self):
-        if hasattr(self, 'mouse_pos'):
-            pyautogui.moveTo(self.mouse_pos[0], self.mouse_pos[1])
-    
-    def record2(self):
-        self.mouse_pos2 = list(pyautogui.position())
-    
-    def back2(self):
-        if hasattr(self, 'mouse_pos2'):
-            pyautogui.moveTo(self.mouse_pos2[0], self.mouse_pos2[1])
-    
-    def record3(self):
-        r, g, b = self.colorpicker.color
-        self.record_color = (r, g, b)
-    
-    def back3(self):
-        if hasattr(self, 'record_color'):
-            r, g, b = self.record_color
-            self.colorpicker.setRGB((r, g, b))
-
 
     def load_image(self):
         file_choose = QFileDialog.getOpenFileName(self, 'Choose image file', self.default_img_path)
@@ -284,7 +221,6 @@ class MainWindow(QMainWindow, Ui_main.Ui_MainWindow):
             self.output_regions = RectRegion(img_size=[pix.height(), pix.width()])
             self.edit_input.setChecked(True)
         
-
     def load_exemplar(self):
         file_choose = QFileDialog.getOpenFileName(self, 'Choose image file', self.default_exp_path)
         img_path = file_choose[0]
@@ -296,7 +232,6 @@ class MainWindow(QMainWindow, Ui_main.Ui_MainWindow):
             self.exemplar_display.setScaledContents(True)
             self.exemplar_mode.setChecked(True)
     
-
     def load_filltran(self, path):
         if path == '':
             path = QFileDialog.getOpenFileName(self, 'Choose model checkpoint file', self.model_path)
@@ -305,13 +240,11 @@ class MainWindow(QMainWindow, Ui_main.Ui_MainWindow):
             self.loader = LoadThread(self, path)
             self.loader.message.connect(self.message)
             self.loader.start()
-    
-    
+      
     def message(self, text, color='black'):
         self.info.setText(f"<font color='{color}'>{text}</font>")
         self.info.repaint()
     
-
     def progress(self, percentage):
         if percentage > 0:
             self.sampling_bar.show()
@@ -319,7 +252,6 @@ class MainWindow(QMainWindow, Ui_main.Ui_MainWindow):
         else:
             self.sampling_bar.hide()
     
-
     def sample(self):
         edit_mode, cond_mode = self.get_mode()
         if self.colorizer == None:
@@ -354,15 +286,10 @@ class MainWindow(QMainWindow, Ui_main.Ui_MainWindow):
         self.diverse_list.addItem(item)
         self.diverse_list.setItemWidget(item, imageWidget)
 
-        #ind = int(len(self.results) - 1)
-        #imageWidget.editButton.clicked.connect(lambda: self.edit_result(imageWidget.item))
-        #imageWidget.deleteButton.clicked.connect(lambda: self.delete_result(imageWidget.item))
-
         self.update()
         if show:
             self.output_image = self.results[-1]
             self.clear_output()
-
 
     def edit_result(self):
         item = self.diverse_list.currentItem()
@@ -370,15 +297,7 @@ class MainWindow(QMainWindow, Ui_main.Ui_MainWindow):
             ind = self.diverse_list.row(item)
             self.output_image = self.results[ind]
             self.clear_output()
-
-    def delete_result(self):
-        item = self.diverse_list.currentItem()
-        if item != None:
-            ind = self.diverse_list.row(item)
-            self.results.pop(ind)
-            item = self.diverse_list.takeItem(ind)
-    
-
+ 
     def get_mode(self):
         cond_mode = []
         if self.stroke_mode.isChecked():
