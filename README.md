@@ -1,6 +1,6 @@
 ## Code release:
 
-Todo:
+<strong>Todo:</strong>
 - <strong>Environment</strong>
 - <strong>Pretrained model checkpoint</strong>
 - <strong>Sampling code</strong>
