@@ -17,12 +17,14 @@ We propose the first unified framework <em>UniColor</em> to support colorization
 Our framework consists of two stages. In the first stage, all different conditions (stroke, exemplar, and text) are converted to a common form of hint points. In the second stage, diverse results are generated automatically either from scratch or based on the condition of hint points.
 ![alt text](figures/unified.png)
 
-# BibTex
+## BibTex
+```
 @misc{huang2022unicolor \
-&emsp;&emsp;&emsp; author = {Huang, Zhitong and Zhao, Nanxuan and Liao, Jing}, \
-    title = {UniColor: A Unified Framework for Multi-Modal Colorization with Transformer}, \
-    year = {2022}, \
-    eprint = {2209.11223}, \
-    archivePrefix = {arXiv}, \
-    primaryClass = {cs.CV} \
+      author = {Huang, Zhitong and Zhao, Nanxuan and Liao, Jing}, \
+      title = {UniColor: A Unified Framework for Multi-Modal Colorization with Transformer}, \
+      year = {2022}, \
+      eprint = {2209.11223}, \
+      archivePrefix = {arXiv}, \
+      primaryClass = {cs.CV} \
 }
+```
