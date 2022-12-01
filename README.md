@@ -1,14 +1,14 @@
 ## Code release:
+<strong>
 Todo:
 - Environment
 - Pretrained model checkpoint
 - Sampling code
 - Interactive interface
+</strong>
 
 Done:
-<font color="red">
 - Basic training code
-</font>
 
 # *UniColor* : A Unified Framework for Multi-Modal Colorization with Transformer
 
