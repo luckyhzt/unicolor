@@ -6,7 +6,7 @@ SIGGRAPH Asia 2022 Paper
 
 ![alt text](figures/teaser.png)
 
-### Zhitong Huang $^{1*}$, Nanxuan Zhao $^{2*}$, Jing Liao $^{1\dagger}$
+Zhitong Huang $^{1*}$, Nanxuan Zhao $^{2*}$, Jing Liao $^{1\dagger}$
 
 $^1$: City University of Hong Kong, Hong Kong SAR, China &nbsp;&nbsp; $^2$: University of Bath, Bath, United Kingdom
 
