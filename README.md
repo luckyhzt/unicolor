@@ -41,7 +41,7 @@ To use exemplar-based colorization, download the [pretrained models](https://git
 - `video_moredata_l1` under the `sample/ImageMatch/checkpoints` folder
 - `vgg19_conv.pth` and `vgg19_gray.pth` under the `sample/ImageMatch/data` folder
 
-To use text-based colorization, install [CLIP](https://github.com/openai/CLIP) with:
+To use text-based colorization, install [CLIP (Contrastive Language-Image Pre-Training)](https://github.com/openai/CLIP) with:
 ```
 $ pip install ftfy regex tqdm
 $ pip install git+https://github.com/openai/CLIP.git
