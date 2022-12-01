@@ -36,6 +36,11 @@ For basic colorization framework:
 $ conda env create -f env.yaml
 $ conda activate unicolor
 ```
+
+To use exemplar-based colorization, download the pretrained models from [this link](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization/releases/download/v1.0/colorization_checkpoint.zip), unzip the file and place the files into the corresponding folders:
+- `video_moredata_l1` under the `checkpoints` folder
+- `vgg19_conv.pth` and `vgg19_gray.pth` under the `data` folder
+
 To use text-based colorization, install [CLIP](https://github.com/openai/CLIP) with:
 ```
 $ pip install ftfy regex tqdm
