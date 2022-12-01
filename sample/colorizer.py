@@ -17,14 +17,14 @@ import torch.nn.functional as F
 from scipy import signal
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
-#import clip
+import clip
 import io
 import kornia
 import torchvision
 import skimage.color
 
 from utils_func import *
-#from ImageMatch.warp import ImageWarper
+from ImageMatch.warp import ImageWarper
 
 
 
