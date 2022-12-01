@@ -19,12 +19,12 @@ Our framework consists of two stages. In the first stage, all different conditio
 
 ## BibTex
 ```
-@misc{huang2022unicolor \
-      author = {Huang, Zhitong and Zhao, Nanxuan and Liao, Jing}, \
-      title = {UniColor: A Unified Framework for Multi-Modal Colorization with Transformer}, \
-      year = {2022}, \
-      eprint = {2209.11223}, \
-      archivePrefix = {arXiv}, \
-      primaryClass = {cs.CV} \
+@misc{huang2022unicolor
+      author = {Huang, Zhitong and Zhao, Nanxuan and Liao, Jing},
+      title = {UniColor: A Unified Framework for Multi-Modal Colorization with Transformer},
+      year = {2022},
+      eprint = {2209.11223},
+      archivePrefix = {arXiv},
+      primaryClass = {cs.CV}
 }
 ```
