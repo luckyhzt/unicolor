@@ -33,7 +33,7 @@ Our framework consists of two stages. In the first stage, all different conditio
 ## Environments
 For basic colorization framework:
 ```
-$ conda env create -f env.yaml
+$ conda env create -f environment.yaml
 $ conda activate unicolor
 ```
 
