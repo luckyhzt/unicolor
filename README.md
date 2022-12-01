@@ -1,11 +1,10 @@
 ## Code release:
-<strong>
+
 Todo:
-- Environment
-- Pretrained model checkpoint
-- Sampling code
-- Interactive interface
-</strong>
+<strong> - Environment </strong>
+<strong> - Pretrained model checkpoint </strong>
+<strong> - Sampling code </strong>
+<strong> - Interactive interface </strong>
 
 Done:
 - Basic training code
