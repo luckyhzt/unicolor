@@ -1,3 +1,12 @@
+## Code release:
+Todo:
+- Environment
+- Pretrained model checkpoint
+- Sampling code
+- Interactive interface
+Done:
+- Basic training code
+
 # *UniColor* : A Unified Framework for Multi-Modal Colorization with Transformer
 
 SIGGRAPH Asia 2022 Paper  
