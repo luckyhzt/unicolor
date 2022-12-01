@@ -132,3 +132,7 @@ dmypy.json
 *.pth
 logs
 results
+
+
+# Whitelist
+!sample/ImageMatch/lib
