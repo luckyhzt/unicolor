@@ -1,7 +1,6 @@
 ## Code release progress:
 
 <strong>Todo:</strong>
-- <strong>Environment</strong>
 - <strong>Instructions for training code</strong>
 - <strong>Pretrained model checkpoint</strong>
 - <strong>Sampling code</strong>
@@ -9,6 +8,7 @@
 
 Done:
 - Basic training code
+- Environment
 
 # *UniColor* : A Unified Framework for Multi-Modal Colorization with Transformer
 
@@ -37,15 +37,9 @@ $ conda env create -f environment.yaml
 $ conda activate unicolor
 ```
 
-To use exemplar-based colorization, download the [pretrained models](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization/releases/download/v1.0/colorization_checkpoint.zip) proposed by [Deep-Exemplar-based-Video-Colorization](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization), unzip the file and place the files into the corresponding folders:
+To use exemplar-based colorization, download the [pretrained models](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization/releases/download/v1.0/colorization_checkpoint.zip) from [Deep-Exemplar-based-Video-Colorization](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization), unzip the file and place the files into the corresponding folders:
 - `video_moredata_l1` under the `sample/ImageMatch/checkpoints` folder
 - `vgg19_conv.pth` and `vgg19_gray.pth` under the `sample/ImageMatch/data` folder
-
-To use text-based colorization, install [CLIP (Contrastive Language-Image Pre-Training)](https://github.com/openai/CLIP) with:
-```
-$ pip install ftfy regex tqdm
-$ pip install git+https://github.com/openai/CLIP.git
-```
 
 ## BibTex
 ```
