@@ -6,9 +6,9 @@ Todo:
 - Interactive interface
 
 Done:
-\textcolor{gray}
+<font color="red">
 - Basic training code
-{gray}
+</font>
 
 # *UniColor* : A Unified Framework for Multi-Modal Colorization with Transformer
 
