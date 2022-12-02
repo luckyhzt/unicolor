@@ -52,6 +52,7 @@ Thanks to the authors who make their code and pretrained models publicly availab
 - In text-based colorization, we use "[CLIP (Contrastive Language-Image Pre-Training)](https://github.com/openai/CLIP)" to calculate text-image relevance.
 
 ## BibTex
+arXiv:
 ```
 @misc{huang2022unicolor
       author = {Huang, Zhitong and Zhao, Nanxuan and Liao, Jing},
@@ -62,3 +63,25 @@ Thanks to the authors who make their code and pretrained models publicly availab
       primaryClass = {cs.CV}
 }
 ```
+
+ACM Transactions on Graphics:
+```
+@article{10.1145/3550454.3555471,
+      author = {Huang, Zhitong and Zhao, Nanxuan and Liao, Jing},
+      title = {UniColor: A Unified Framework for Multi-Modal Colorization with Transformer},
+      year = {2022},
+      issue_date = {December 2022},
+      publisher = {Association for Computing Machinery},
+      address = {New York, NY, USA},
+      volume = {41},
+      number = {6},
+      issn = {0730-0301},
+      url = {https://doi.org/10.1145/3550454.3555471},
+      doi = {10.1145/3550454.3555471},
+      journal = {ACM Trans. Graph.},
+      month = {nov},
+      articleno = {205},
+      numpages = {16},
+}
+```
+
