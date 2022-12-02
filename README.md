@@ -42,6 +42,11 @@ To use exemplar-based colorization, download the [pretrained models](https://git
 - `video_moredata_l1` under the `sample/ImageMatch/checkpoints` folder
 - `vgg19_conv.pth` and `vgg19_gray.pth` under the `sample/ImageMatch/data` folder
 
+## Comments
+- Our code is built heavily based on "[Taming Transformers for High-Resolution Image Synthesis](https://github.com/CompVis/taming-transformers)". Thanks for open-sourcing!
+- In exemplar-based colorization, we rely on code from "[Deep Exemplar-based Video Colorization](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization)" to calculate the similarity between grayscale and reference images. Thanks for open-sourcing!
+- In text-based colorization, we use "[CLIP (Contrastive Language-Image Pre-Training)](https://github.com/openai/CLIP)" to calculate text-image relevance. Thanks for open-sourcing!
+
 ## BibTex
 ```
 @misc{huang2022unicolor
