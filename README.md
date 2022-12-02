@@ -13,7 +13,7 @@ Done:
 
 # *UniColor* : A Unified Framework for Multi-Modal Colorization with Transformer
 
-[Project page](https://luckyhzt.github.io/unicolor) | [arXiv](https://arxiv.org/abs/2209.11223) ([LowRes version](https://arxiv.org/abs/2209.11223)) | [SIGGRAPH Asia 2022 Paper](https://dl.acm.org/doi/10.1145/3550454.3555471) | [BibTex](#bibtex)
+[Project page](https://luckyhzt.github.io/unicolor) | [arXiv](https://arxiv.org/abs/2209.11223) ([LowRes version](https://luckyhzt.github.io/files/unicolor-lowres.pdf)) | [SIGGRAPH Asia 2022 Paper](https://dl.acm.org/doi/10.1145/3550454.3555471) | [BibTex](#bibtex)
 
 ![alt text](figures/teaser.png)
 
