@@ -17,7 +17,7 @@ Done:
 
 ![alt text](figures/teaser.png)
 
-Zhitong Huang$^1$, [Nanxuan Zhao](http://nxzhao.com/)$^{2*}$, [Jing Liao](https://liaojing.github.io/html/)$^{1\dagger}$
+Zhitong Huang&thinsp$^{1*}$, [Nanxuan Zhao](http://nxzhao.com/)$^{2*}$, [Jing Liao](https://liaojing.github.io/html/)$^{1\dagger}$
 
 <font size="1"> $^1$: City University of Hong Kong, Hong Kong SAR, China &nbsp;&nbsp; $^2$: University of Bath, Bath, United Kingdom </font> \
 <font size="1"> $^*$: Both authors contributed equally to this research &nbsp;&nbsp; $^\dagger$: Corresponding author </font>
