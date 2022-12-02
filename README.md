@@ -3,13 +3,13 @@
 <strong>Todo:</strong>
 - <strong>Instructions for training code</strong>
 - <strong>Dataset preparation</strong>
-- <strong>Sampling code</strong>
 - <strong>Interactive interface</strong>
 
 Done:
 - Basic training code
 - Environment
 - Pretrained model checkpoint
+- Sampling code
 
 # *UniColor:* A Unified Framework for Multi-Modal Colorization with Transformer
 
@@ -44,6 +44,9 @@ Download the pretrained models (including both Chroma-VQGAN and Hybrid-Transform
 To use exemplar-based colorization, download the [pretrained models](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization/releases/download/v1.0/colorization_checkpoint.zip) from [Deep-Exemplar-based-Video-Colorization](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization), unzip the file and place the files into the corresponding folders:
 - `video_moredata_l1` under the `sample/ImageMatch/checkpoints` folder
 - `vgg19_conv.pth` and `vgg19_gray.pth` under the `sample/ImageMatch/data` folder
+
+## Sampling
+In `sample/sample.ipynb`, we show how to use our framework to perform unconditional, stroke-based, exemplar-based, and text-based colorization.
 
 ## Comments
 Thanks to the authors who make their code and pretrained models publicly available:
