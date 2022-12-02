@@ -2,7 +2,6 @@
 
 <strong>Todo:</strong>
 - <strong>Instructions for training code</strong>
-- <strong>Pretrained model checkpoint</strong>
 - <strong>Dataset preparation</strong>
 - <strong>Sampling code</strong>
 - <strong>Interactive interface</strong>
@@ -10,6 +9,7 @@
 Done:
 - Basic training code
 - Environment
+- Pretrained model checkpoint
 
 # *UniColor* : A Unified Framework for Multi-Modal Colorization with Transformer
 
