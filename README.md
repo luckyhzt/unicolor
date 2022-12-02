@@ -30,7 +30,7 @@ Our framework consists of two stages. In the first stage, all different conditio
 ![alt text](figures/unified.png)
 
 ## Environments
-For basic colorization framework:
+To setup Anaconda environment:
 ```
 $ conda env create -f environment.yaml
 $ conda activate unicolor
