@@ -2,7 +2,6 @@
 
 <strong>Todo:</strong>
 - <strong>Instructions for training code</strong>
-- <strong>Pretrained model checkpoint</strong>
 - <strong>Dataset preparation</strong>
 - <strong>Sampling code</strong>
 - <strong>Interactive interface</strong>
@@ -10,12 +9,11 @@
 Done:
 - Basic training code
 - Environment
+- Pretrained model checkpoint
 
-# *UniColor* : A Unified Framework for Multi-Modal Colorization with Transformer
+# *UniColor:* A Unified Framework for Multi-Modal Colorization with Transformer
 
-SIGGRAPH Asia 2022 Paper  
-
-[Project page](https://luckyhzt.github.io/unicolor) | [arXiv](https://arxiv.org/abs/2209.11223) | [BibTex](#bibtex)
+[Project page](https://luckyhzt.github.io/unicolor) | [arXiv](https://arxiv.org/abs/2209.11223) ([LowRes version](https://luckyhzt.github.io/files/unicolor-lowres.pdf)) | [SIGGRAPH Asia 2022 Paper](https://dl.acm.org/doi/10.1145/3550454.3555471) | [BibTex](#bibtex)
 
 ![alt text](figures/teaser.png)
 
@@ -32,22 +30,29 @@ Our framework consists of two stages. In the first stage, all different conditio
 ![alt text](figures/unified.png)
 
 ## Environments
-For basic colorization framework:
+To setup Anaconda environment:
 ```
 $ conda env create -f environment.yaml
 $ conda activate unicolor
 ```
+
+## Pretrained Models
+Download the pretrained models (including both Chroma-VQGAN and Hybrid-Transformer) from [Hugging Face](https://huggingface.co/luckyhzt/unicolor-pretrained-model/tree/main):
+- Trained model with ImageNet - put the file `mscoco_step259999.ckpt` under folder `framework/checkpoints/unicolor_imagenet`.
+- Trained model with MSCOCO - put the file `imagenet_step142124.ckpt` under folder `framework/checkpoints/unicolor_mscoco`.
 
 To use exemplar-based colorization, download the [pretrained models](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization/releases/download/v1.0/colorization_checkpoint.zip) from [Deep-Exemplar-based-Video-Colorization](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization), unzip the file and place the files into the corresponding folders:
 - `video_moredata_l1` under the `sample/ImageMatch/checkpoints` folder
 - `vgg19_conv.pth` and `vgg19_gray.pth` under the `sample/ImageMatch/data` folder
 
 ## Comments
-- Our code is built heavily based on "[Taming Transformers for High-Resolution Image Synthesis](https://github.com/CompVis/taming-transformers)". Thanks for open-sourcing!
-- In exemplar-based colorization, we rely on code from "[Deep Exemplar-based Video Colorization](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization)" to calculate the similarity between grayscale and reference images. Thanks for open-sourcing!
-- In text-based colorization, we use "[CLIP (Contrastive Language-Image Pre-Training)](https://github.com/openai/CLIP)" to calculate text-image relevance. Thanks for open-sourcing!
+Thanks to the authors who make their code and pretrained models publicly available:
+- Our code is built based on "[Taming Transformers for High-Resolution Image Synthesis](https://github.com/CompVis/taming-transformers)".
+- In exemplar-based colorization, we rely on code from "[Deep Exemplar-based Video Colorization](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization)" to calculate the similarity between grayscale and reference images.
+- In text-based colorization, we use "[CLIP (Contrastive Language-Image Pre-Training)](https://github.com/openai/CLIP)" to calculate text-image relevance.
 
 ## BibTex
+arXiv:
 ```
 @misc{huang2022unicolor
       author = {Huang, Zhitong and Zhao, Nanxuan and Liao, Jing},
@@ -58,3 +63,25 @@ To use exemplar-based colorization, download the [pretrained models](https://git
       primaryClass = {cs.CV}
 }
 ```
+
+ACM Transactions on Graphics:
+```
+@article{10.1145/3550454.3555471,
+      author = {Huang, Zhitong and Zhao, Nanxuan and Liao, Jing},
+      title = {UniColor: A Unified Framework for Multi-Modal Colorization with Transformer},
+      year = {2022},
+      issue_date = {December 2022},
+      publisher = {Association for Computing Machinery},
+      address = {New York, NY, USA},
+      volume = {41},
+      number = {6},
+      issn = {0730-0301},
+      url = {https://doi.org/10.1145/3550454.3555471},
+      doi = {10.1145/3550454.3555471},
+      journal = {ACM Trans. Graph.},
+      month = {nov},
+      articleno = {205},
+      numpages = {16},
+}
+```
+

@@ -362,6 +362,6 @@ class Colorizer():
 
 # Testing whether this class works
 if __name__ == '__main__':
-    ckpt_file = '/home/huangzhitong/code/unicolor/framework/checkpoints/unicolor_mscoco/mscoco_step259999'
-    device = 'cuda:7'
+    ckpt_file = 'framework/checkpoints/unicolor_mscoco/mscoco_step259999.ckpt'
+    device = 'cuda:0'
     colorizer = Colorizer(ckpt_file, device, [256, 256], load_clip=True, load_warper=True)
