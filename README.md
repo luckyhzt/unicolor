@@ -47,7 +47,7 @@ To use exemplar-based colorization, download the [pretrained models](https://git
 
 ## Comments
 Thanks to the authors who make their code and pretrained models publicly available:
-- Our code is built heavily based on "[Taming Transformers for High-Resolution Image Synthesis](https://github.com/CompVis/taming-transformers)".
+- Our code is built based on "[Taming Transformers for High-Resolution Image Synthesis](https://github.com/CompVis/taming-transformers)".
 - In exemplar-based colorization, we rely on code from "[Deep Exemplar-based Video Colorization](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization)" to calculate the similarity between grayscale and reference images.
 - In text-based colorization, we use "[CLIP (Contrastive Language-Image Pre-Training)](https://github.com/openai/CLIP)" to calculate text-image relevance.
 
