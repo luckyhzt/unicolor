@@ -14,8 +14,6 @@ import clip
 import json
 
 from utils_func import *
-from sample_func import *
-from clip_segment import *
 from colorizer import Colorizer
 
 
