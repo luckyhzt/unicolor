@@ -130,6 +130,7 @@ dmypy.json
 
 # Custom
 *.pth
+*.ckpt
 logs
 results
 

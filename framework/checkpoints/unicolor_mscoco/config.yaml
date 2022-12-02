@@ -1,0 +1,64 @@
+dataset:
+  batch_size: 16
+  color: rgb
+  datapath: /home/ma-user/work/wc_utils/input/coco
+  mode_prob:
+    block: 0.0
+    full: 0.05
+    random: 0.95
+  name: coco
+  num_workers: 32
+  patch_size:
+  - 16
+  - 16
+  resolution:
+  - 256
+  - 256
+  strokes: 16
+  superpixel: slic
+log_dir: /home/ma-user/work/wc_utils/logs/bert_coco
+model:
+  hybridtran_config:
+    dim_gray: 512
+    embed_dim: 512
+    input_shape:
+    - 16
+    - 16
+    num_heads: 16
+    num_layers: 24
+    vocab_color: 4096
+  cond_ratio: 0.7
+  lr_decay:
+  - 100
+  - 0.1
+  vqgan_config:
+    ddconfig:
+      attn_resolutions:
+      - 16
+      ch: 128
+      ch_mult:
+      - 1
+      - 1
+      - 2
+      - 2
+      - 4
+      double_z: false
+      dropout: 0.0
+      in_channels: 3
+      num_res_blocks: 2
+      out_ch: 3
+      resolution: 256
+      z_channels: 512
+    embed_dim: 512
+    n_embed: 4096
+  vqgan_path: Null # Set to trained VQGAN for training
+name: imagenet
+train:
+  accumulate_grad_batches: 1
+  base_learning_rate: 3.0e-06
+  ckpt_steps: 20000
+  from_checkpoint: null
+  gpus: 4
+  log_steps: 1
+  precision: 16
+  steps: 10000000
