@@ -37,6 +37,10 @@ $ conda activate unicolor
 ```
 
 ## Pretrained Models
+Pretrained models (including both Chroma-VQGAN and Hybrid-Transformer):
+- ImageNet - put the .ckpt file under `framework/checkpoints/unicolor_imagenet` folder.
+- MSCOCO - put the .ckpt file under `framework/checkpoints/unicolor_mscoco` folder.
+
 To use exemplar-based colorization, download the [pretrained models](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization/releases/download/v1.0/colorization_checkpoint.zip) from [Deep-Exemplar-based-Video-Colorization](https://github.com/zhangmozhe/Deep-Exemplar-based-Video-Colorization), unzip the file and place the files into the corresponding folders:
 - `video_moredata_l1` under the `sample/ImageMatch/checkpoints` folder
 - `vgg19_conv.pth` and `vgg19_gray.pth` under the `sample/ImageMatch/data` folder
