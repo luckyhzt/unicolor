@@ -2,7 +2,6 @@
 
 <strong>Todo:</strong>
 - <strong>Instructions for training code</strong>
-- <strong>Dataset preparation</strong>
 - <strong>Interactive interface</strong>
 
 Done:
@@ -10,6 +9,7 @@ Done:
 - Environment
 - Pretrained model checkpoint
 - Sampling code
+- Dataset preparation
 
 # *UniColor:* A Unified Framework for Multi-Modal Colorization with Transformer
 
@@ -49,7 +49,7 @@ To use exemplar-based colorization, download the [pretrained models](https://git
 In `sample/sample.ipynb`, we show how to use our framework to perform unconditional, stroke-based, exemplar-based, and text-based colorization.
 
 ## Training
-### Data preparation
+#### Data preparation
 Run `framework/datasets/data_prepare.py` to preprocess the datasets. This process will generate .yaml files for training and superpixel images which are used to extract hint points for training.
 - For ImageNet, place the dataset in a folder with two sub-folders `train` and `val`, and run:
 ```
