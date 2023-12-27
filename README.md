@@ -48,6 +48,18 @@ To use exemplar-based colorization, download the [pretrained models](https://git
 ## Sampling
 In `sample/sample.ipynb`, we show how to use our framework to perform unconditional, stroke-based, exemplar-based, and text-based colorization.
 
+## Training
+### Data preparation
+Run `framework/datasets/data_prepare.py` to preprocess the datasets. This process will generate .yaml files for training and superpixel images which are used to extract hint points for training.
+- For ImageNet, place the dataset in a folder with two sub-folders `train` and `val`, and run:
+```
+python framework/datasets/data_prepare.py $your_imagenet_dir$ imagenet --num_process $num_of_process$
+```
+- For COCO2017 dataset, place the dataset in a folder with three sub-folders `train2017`, `unlabeled2017` and `val2017`, and run:
+```
+python framework/datasets/data_prepare.py $your_coco2017_dir$ coco --num_process $num_of_process$
+```
+
 ## Comments
 Thanks to the authors who make their code and pretrained models publicly available:
 - Our code is built based on "[Taming Transformers for High-Resolution Image Synthesis](https://github.com/CompVis/taming-transformers)".
