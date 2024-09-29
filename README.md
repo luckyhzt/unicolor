@@ -1,16 +1,3 @@
-## Code release progress:
-
-<strong>Todo:</strong>
-- <strong>Instructions for training code</strong>
-- <strong>Interactive interface</strong>
-
-Done:
-- Basic training code
-- Environment
-- Pretrained model checkpoint
-- Sampling code
-- Dataset preparation
-
 # *UniColor:* A Unified Framework for Multi-Modal Colorization with Transformer
 
 [Project page](https://luckyhzt.github.io/unicolor) | [arXiv](https://arxiv.org/abs/2209.11223) ([LowRes version](https://luckyhzt.github.io/files/unicolor-lowres.pdf)) | [ACM TOG Paper](https://dl.acm.org/doi/10.1145/3550454.3555471) | [BibTex](#bibtex)
